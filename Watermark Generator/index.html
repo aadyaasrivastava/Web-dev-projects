@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="spiral img 4.jfif" type="image/x-icon" />
+  <title>Missc.oder Studio-Floating WaterMark Generator</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      background-color: black;
+    }
+
+    body {
+      text-align: center;
+      height: 100vh;
+    }
+
+    body::after {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      width: 0;
+      height: 100%;
+    }
+
+    .displaynone{
+      display: none;
+    }
+
+    .container {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #canvas {
+      width: 800px;
+      height: 400px;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="displaynone">Missc.oder's Studio</h1>
+  <section class="container">
+    <h2 class="displaynone">WaterMark</h2>
+    <header class="header">
+      <h3 class="displaynone">Picture</h3>
+      <canvas id="canvas"></canvas>
+    </header>
+    <main class="main">
+      <select name="bannerTheme" id="bannerTheme">
+        <option value="school.jpg" selected>Select FORMAT</option>
+      </select>
+      <input id="bannerText" type="text" placeholder="Main text (displayed in center)">
+      <input id="bannerSubText" type="text" value="National Air University Course" placeholder="Please enter subtitle">
+      <button id="create">Generate</button>
+      <button id="download">Download</button>
+      <p class="displaynone">A web page to make photo WaterMarks quickly</p>
+    </main>
+  </section>
+  <script>
+    let canvas = document.getElementById('canvas');
+    let bannerText = document.getElementById('bannerText');
+    let bannerSubText = document.getElementById('bannerSubText');
+    let bannerTheme = document.getElementById('bannerTheme');
+    bannerText.addEventListener('change', createCanvas);
+    bannerTheme.addEventListener('change', function (e) {
+      createCanvas();
+      switch (e.target.value) {
+        case 'school.jpg':
+          bannerSubText.value = 'National Air University Course';
+          break;
+        default:
+          break;
+      }
+    });
+    document.getElementById('create').addEventListener('click', createCanvas);
+
+    function createCanvas() {
+      canvasDraw(canvas, bannerText.value, bannerSubText.value, bannerTheme.value);
+    }
+
+    canvasDraw(canvas);
+
+    function canvasDraw(canvas, str = 'Generate personalised' <br> 'Watermarks', subStr = 'Subtitle input box', imgSrc = false, fontsize = '72px') {
+      let ctx = canvas.getContext("2d");
+      let width = canvas.offsetWidth;
+      let height = canvas.offsetHeight;
+
+      canvas.width = width;
+      canvas.height = height;
+
+      if (imgSrc) {
+        let img = new Image();
+        img.src = imgSrc;
+        img.addEventListener('load', function (e) {
+          ctx.drawImage(img, 0, 0, width, height);
+          setState();
+        })
+      } else {
+        setState();
+      }
+
+      function fillText() {
+        ctx.beginPath();
+        ctx.font = '700 ' + fontsize + ' Noto Sans TC';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(str, width / 2, height / 2);
+        ctx.closePath();
+      }
+
+      function fillSubText() {
+        ctx.beginPath();
+        ctx.font = '300 ' + (parseInt(fontsize) / 4) + 'px Noto Sans TC';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(subStr, '20', "20");
+        ctx.closePath();
+      }
+
+      function setState() {
+        ctx.fillStyle = '#000000cc';
+        ctx.fillRect(0, 0, width, height);
+        fillText();
+        fillSubText();
+        ctx.beginPath();
+        ctx.strokeStyle = "#ffffff";
+        ctx.strokeRect(10, 10, width - 20, height - 20)
+        ctx.closePath();
+      }
+
+      return ctx;
+    }
+
+    document.getElementById('download').addEventListener('click', function () {
+      const link = document.createElement('a')
+      link.download = bannerText.value + '.jpeg'
+      link.href = canvas.toDataURL('image/jpeg', 1)
+      link.click()
+    })
+  </script>
+</body>
+
+</html>
