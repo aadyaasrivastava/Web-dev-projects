@@ -1,0 +1,24 @@
+.conatiner{
+    text-align: center;
+    
+}
+
+table{
+    margin: auto;
+    height: 400px;
+    width: 498px;
+}
+
+input{
+    font-size: 38px;
+}
+button{
+    margin-top: 20px;
+    /* background-image:; */
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 57px;
+}
+/* #long{
+    height: 120px;
+} */
